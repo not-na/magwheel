@@ -3,6 +3,14 @@
   <component name="CMakePythonSetting">
     <option name="pythonIntegrationState" value="YES" />
   </component>
-  <component name="CMakeWorkspace" PROJECT_DIR="$PROJECT_DIR$" />
-  <component name="WestSettings"><![CDATA[{}]]></component>
+  <component name="CMakeWorkspace" PROJECT_DIR="$PROJECT_DIR$/applications/main">
+    <contentRoot DIR="$PROJECT_DIR$" />
+  </component>
+  <component name="WestSettings"><![CDATA[{
+  "westProfiles": {
+    "West": {
+      "boardName": "xiao_rp2040/rp2040"
+    }
+  }
+}]]></component>
 </project>

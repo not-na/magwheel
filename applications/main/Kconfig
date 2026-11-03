@@ -18,8 +18,34 @@ source "subsys/logging/Kconfig.template.log_config"
 
 menu "Main application configuration"
 
-#config MAIN_ENABLE_SOMETHING
-#	bool "Enable some feature in the main application"
-#	default y
+config USB_VID
+    hex "USB Vendor ID"
+    default 0x1209
+    help
+        USB Vendor ID for the device.
+
+config USB_PID
+    hex "USB Product ID"
+    default 0x0001
+    help
+        USB Product ID for the device.
+
+config USB_MANUFACTURER
+    string "USB Manufacturer"
+    default "not-na"
+    help
+        USB Manufacturer string for the device.
+
+config USB_PRODUCT
+    string "USB Product"
+    default "MagWheel"
+    help
+        USB Product string for the device.
+
+config MAGWHEEL_DEADZONE_DEFAULT
+    int "MagWheel Deadzone Default"
+    default 4
+    help
+        Default in LSBs for the encoder to prevent jitter when idle.
 
 endmenu
