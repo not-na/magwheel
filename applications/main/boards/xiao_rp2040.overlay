@@ -13,6 +13,17 @@
         led-strip = &ws2812;
     };
 
+    chosen {
+        zephyr,console = &cdc_acm_uart0;
+        zephyr,shell-uart = &cdc_acm_uart0;
+        zephyr,log-uart = &log_uarts;
+    };
+
+    log_uarts: log_uarts {
+        compatible = "zephyr,log-uart";
+        uarts = <&cdc_acm_uart0>;
+    };
+
     gpio_keys {
         compatible = "gpio-keys";
         status = "okay";
@@ -27,7 +38,9 @@
 
 &i2c1 {
     status = "okay";
-    clock-frequency = <I2C_BITRATE_FAST>; // 400kHz
+    clock-frequency = <I2C_BITRATE_STANDARD>;
+    pinctrl-0 = <&i2c1_default>;
+    pinctrl-names = "default";
 
     as5600: as5600@36 {
         compatible = "ams,as5600";
@@ -61,6 +74,11 @@
 
 &zephyr_udc0 {
     status = "okay";
+
+    cdc_acm_uart0: cdc_acm_uart0 {
+        compatible = "zephyr,cdc-acm-uart";
+        label = "CDC_ACM_0";
+    };
 
     hid_dev_0: hid_dev_0 {
         compatible = "zephyr,hid-device";

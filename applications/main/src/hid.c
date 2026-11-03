@@ -76,11 +76,16 @@ static int set_report(const struct device *dev, const uint8_t type,
   return 0;
 }
 
+void hid_set_idle(const struct device *dev, const uint8_t id, const uint32_t duration) {
+  // TODO: does this need to be handled?
+}
+
 struct hid_device_ops device_ops = {
     .iface_ready = iface_ready,
     .get_report = get_report,
     .verify_set_report = verify_set_report,
     .set_report = set_report,
+    .set_idle = hid_set_idle,
 };
 
 int hid_device_init(void) {

@@ -54,6 +54,9 @@ int main(void)
 	struct sensor_value val;
 	int delta_acc = 0;
 
+	LOG_INF("Booted!");
+	k_msleep(1000);
+
 	while (true) {
 		if (!get_hid_ready()) {
 			LOG_INF("Waiting for HID to be ready...");
@@ -76,13 +79,13 @@ int main(void)
 		// TODO: make configurable
 		int rot = (val.val1 * 1000000 + val.val2) / 100000;
 
-		LOG_INF("Rotation: %d", rot);
+		LOG_INF_RATELIMIT_RATE(1000, "Rotation %d", rot);
 
 		if (last_position == 0) {
 			last_position = rot;
 		}
 
-		// Sequence math, reverse motion?
+		// How much backwards rotation would it take to get to the new position?
 		int delta_rev = 0;
 		if (rot > last_position) {
 			delta_rev = rot - last_position - 3600;
@@ -90,22 +93,24 @@ int main(void)
 			delta_rev = 3600 - last_position + rot;
 		}
 
-		// Normal, forward motion?
+		// How much forwards rotation would it take to get to the new position?
 		int delta_fwd = rot - last_position;
 
 		// Use the most likely candidate, whichever is smaller
 		int delta = abs(delta_rev) > abs(delta_fwd) ? delta_fwd : delta_rev;
 
-		if (delta <= CONFIG_MAGWHEEL_DEADZONE_DEFAULT) {
+		if (abs(delta) <= CONFIG_MAGWHEEL_DEADZONE_DEFAULT) {
 			continue;
 		}
 
-		hid_device_send_wheel_report(delta_acc);
+		LOG_INF_RATELIMIT_RATE(1000, "Delta %d", delta);
+
+		hid_device_send_wheel_report(delta);
 
 		// Only update last pos if we sent a report
 		last_position = rot;
 
-		k_usleep(1000);
+		k_msleep(5);
 	}
 
 	return 0;

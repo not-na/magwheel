@@ -18,6 +18,19 @@ source "subsys/logging/Kconfig.template.log_config"
 
 menu "Main application configuration"
 
+config MAGWHEEL_CDC
+    bool "Enable CDC ACM debug UART"
+    default y
+    depends on USB_DEVICE_STACK_NEXT
+    select SERIAL
+    select USBD_CDC_ACM_CLASS
+    select UART_CONSOLE
+    select LOG_BACKEND_UART
+    select UART_LINE_CTRL
+    help
+        Enable the USB CDC ACM virtual UART used for the console, shell,
+        and UART logging backend.
+
 config USB_VID
     hex "USB Vendor ID"
     default 0x1209
