@@ -35,7 +35,7 @@ High-resolution HID wheel
    ```
 5. Build your application:
    ```bash
-   west build magwheel/applications/main -p always -b nucleo_f302r8
+   west build magwheel/applications/main -p always -b xiao_rp2040
    ```
 5. Run Twister tests:
     ```bash

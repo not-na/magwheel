@@ -3,11 +3,13 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "zephyr/kernel.h"
+
 #define REPORT_ID_DIAL 0x01
 #define REPORT_ID_MOUSE 0x02
 #define REPORT_ID_MULTIPLIER 0x03
 
-#define RESOLUTION_MULTIPLIER 80
+#define RESOLUTION_MULTIPLIER CONFIG_MAGWHEEL_HID_RESOLUTION
 
 static const uint8_t hid_report_desc[] = {
     0x05, 0x01,                 // USAGE_PAGE (Generic Desktop)

@@ -61,4 +61,58 @@ config MAGWHEEL_DEADZONE_DEFAULT
     help
         Default in LSBs for the encoder to prevent jitter when idle.
 
+config MAGWHEEL_STEPS_PER_REV
+    int "MagWheel Steps Per Revolution"
+    default 3600
+    help
+        Number of steps per revolution for the encoder.
+
+config MAGWHEEL_HID_RESOLUTION
+    int "MagWheel HID Resolution"
+    default 60
+    help
+        Resolution of the HID reports in steps per revolution.
+
+menuconfig MAGWHEEL_SPEEDSCALING
+    bool "Enable MagWheel speed-dependent scaling"
+    depends on TIMER_HAS_64BIT_CYCLE_COUNTER
+    select REQUIRES_FLOAT_PRINTF
+    default y
+    help
+        Enable speed scaling for the MagWheel.
+
+        The highest speed is determined by the normal config.
+
+        Scaling is implemented by adding a multiplier to the steps at high speeds,
+        reporting a lower HID resolution normally.
+
+if MAGWHEEL_SPEEDSCALING
+
+config MAGWHEEL_SPEEDSCALING_FACTOR
+    int "Factor from highest to lowest speed"
+    default 5
+    help
+        Increases the speed by this factor at high speeds.
+
+config MAGWHEEL_SPEEDSCALING_THRESHOLD_LOW
+    int "Low Speed threshold for scaling"
+    default 1500
+    help
+        The speed threshold in steps per second below which to apply the low speed scaling.
+
+config MAGWHEEL_SPEEDSCALING_THRESHOLD_HIGH
+    int "High Speed threshold for scaling"
+    default 6000
+    help
+        The speed threshold in steps per second above which to apply the maximum speed.
+
+config MAGWHEEL_SPEEDSCALING_SMOOTHING
+    int "Averaging duration for speed measurement in samples"
+    default 10
+    help
+        Speed for scaling is measured as the average speed over this duration. A sample
+        is usually taken every 5ms.
+
+endif # MAGWHEEL_SPEEDSCALING
+
 endmenu
